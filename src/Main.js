@@ -7,18 +7,20 @@ import MovieDetails from './MoviesList/MovieDetails';
 import WatchedSummary from './Watched/WatchedSummary';
 import WatchedMoviesList from './Watched/WatchedMoviesList';
 
-export default function Main({ movies, tempWatchedData, error, loading }) {
-  const [watched, setWatched] = useState(tempWatchedData);
-  const [selectedId, setSelectedId] = useState(null);
+const storage = JSON.parse(localStorage.getItem('watched'));
 
-  console.log(selectedId);
+export default function Main({
+  movies,
+  error,
+  loading,
+  selectedId,
+  onSelectedId,
+  onCloseMovie,
+}) {
+  const [watched, setWatched] = useState(storage);
 
   function handleSelectedMovie(id) {
-    setSelectedId((selectedId) => (selectedId === id ? null : id));
-  }
-
-  function handleCloseMovie() {
-    setSelectedId(null);
+    onSelectedId((selectedId) => (selectedId === id ? null : id));
   }
 
   function handleAddWatched(movie) {
@@ -28,6 +30,13 @@ export default function Main({ movies, tempWatchedData, error, loading }) {
   function handleDeleteWatched(id) {
     setWatched(watched.filter((movie) => movie.imdbID !== id));
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem('watched', JSON.stringify(watched));
+    },
+    [watched],
+  );
 
   return (
     <main className='main'>
@@ -42,7 +51,7 @@ export default function Main({ movies, tempWatchedData, error, loading }) {
         {selectedId ? (
           <MovieDetails
             selectedId={selectedId}
-            onCloseMovie={handleCloseMovie}
+            onCloseMovie={onCloseMovie}
             onAddWatched={handleAddWatched}
             watched={watched}
           />

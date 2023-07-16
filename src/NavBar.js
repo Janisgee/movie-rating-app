@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function NavBar({ movies, query, onQuery }) {
   return (
@@ -20,6 +20,26 @@ function Logo() {
 }
 
 function Search({ query, onQuery }) {
+  const inputEl = useRef(null);
+
+  useEffect(
+    function () {
+      function callBack(e) {
+        if (document.activeElement === inputEl.current) return;
+        if (e.code === 'Enter') {
+          inputEl.current.focus();
+          onQuery('');
+        }
+      }
+      document.addEventListener('keydown', callBack);
+
+      return function () {
+        document.removeEventListener('keydown', callBack);
+      };
+    },
+    [onQuery],
+  );
+
   return (
     <input
       className='search'
@@ -27,6 +47,7 @@ function Search({ query, onQuery }) {
       placeholder='Search movies...'
       value={query}
       onChange={(e) => onQuery(e.target.value)}
+      ref={inputEl}
     />
   );
 }
