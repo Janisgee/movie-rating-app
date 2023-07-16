@@ -49,7 +49,7 @@ const tempWatchedData = [
   },
 ];
 
-const search = 'inceptio';
+// const search = 'inceptio';
 const apiKey = '8be92ce5';
 
 export default function App() {

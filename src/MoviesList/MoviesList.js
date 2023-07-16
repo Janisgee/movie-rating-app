@@ -1,10 +1,14 @@
-import MovieDetails from './MovieDetails';
+import MovieItem from './MovieItem';
 
-export default function MoviesList({ movies }) {
+export default function MoviesList({ movies, onSelectedMovie }) {
   return (
     <ul className='list list-movies'>
       {movies?.map((movie) => (
-        <MovieDetails movie={movie} key={movie.imdbID} />
+        <MovieItem
+          movie={movie}
+          key={movie.imdbID}
+          onSelectedMovie={onSelectedMovie}
+        />
       ))}
     </ul>
   );
