@@ -21,6 +21,14 @@ export default function Main({ movies, tempWatchedData, error, loading }) {
     setSelectedId(null);
   }
 
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
+  function handleDeleteWatched(id) {
+    setWatched(watched.filter((movie) => movie.imdbID !== id));
+  }
+
   return (
     <main className='main'>
       <Box>
@@ -35,11 +43,16 @@ export default function Main({ movies, tempWatchedData, error, loading }) {
           <MovieDetails
             selectedId={selectedId}
             onCloseMovie={handleCloseMovie}
+            onAddWatched={handleAddWatched}
+            watched={watched}
           />
         ) : (
           <>
             <WatchedSummary watched={watched} />
-            <WatchedMoviesList watched={watched} />
+            <WatchedMoviesList
+              watched={watched}
+              onDeleteWatched={handleDeleteWatched}
+            />
           </>
         )}
       </Box>

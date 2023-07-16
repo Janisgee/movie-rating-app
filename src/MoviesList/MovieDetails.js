@@ -4,12 +4,24 @@ import Loader from '../Reuseable/Loader';
 import StarRating from '../StarRating';
 const apiKey = '8be92ce5';
 
-export default function MovieDetails({ selectedId, onCloseMovie }) {
+export default function MovieDetails({
+  selectedId,
+  onCloseMovie,
+  onAddWatched,
+  watched,
+}) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState({});
-  const [rating, setRating] = useState(0);
-  console.log(selectedId);
+  const [userRating, setUserRating] = useState(0);
+  console.log(watched);
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  console.log(isWatched);
+
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectedId,
+  )?.userRating;
+  console.log(watchedUserRating);
 
   const {
     Title: title,
@@ -25,6 +37,19 @@ export default function MovieDetails({ selectedId, onCloseMovie }) {
     imdbRating,
   } = selectedMovie;
 
+  function handleAdd() {
+    const newMovie = {
+      title,
+      poster,
+      runtime: Number(runtime.split(' ').at(0)),
+      imdbRating: Number(imdbRating),
+      userRating: userRating,
+      imdbID,
+    };
+    onAddWatched(newMovie);
+    onCloseMovie();
+  }
+
   useEffect(
     function () {
       async function getFetchMoviesDetails() {
@@ -37,7 +62,6 @@ export default function MovieDetails({ selectedId, onCloseMovie }) {
           if (!res.ok)
             throw new Error(`Sorry, we cannot find movie details. 😔`);
           const data = await res.json();
-          console.log(data);
 
           setSelectedMovie(data);
           setLoading(false);
@@ -74,8 +98,20 @@ export default function MovieDetails({ selectedId, onCloseMovie }) {
           </header>
           <section>
             <div className='rating'>
-              <StarRating size={23} onSetRating={setRating} />
-              <button className='btn-add'>+ Add to list</button>
+              {isWatched ? (
+                <p>
+                  You rated with movie {watchedUserRating} <span>⭐</span>
+                </p>
+              ) : (
+                <>
+                  <StarRating size={23} onSetRating={setUserRating} />
+                  {userRating > 0 && (
+                    <button className='btn-add' onClick={handleAdd}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              )}
             </div>
             <p>
               <em>{plot}</em>
