@@ -71,7 +71,7 @@ export default function MovieDetails({
           setError('');
           setLoading(true);
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${apiKey}&i=${selectedId}`,
+            `https://www.omdbapi.com/?apikey=${apiKey}&i=${selectedId}`,
           );
           if (!res.ok)
             throw new Error(`Sorry, we cannot find movie details. 😔`);

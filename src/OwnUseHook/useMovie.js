@@ -2,7 +2,7 @@ import { useFetch } from './useFetch';
 const apiKey = '8be92ce5';
 
 export function useMovie(query) {
-  const url = `http://www.omdbapi.com/?apikey=${apiKey}&s=${query}`;
+  const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${query}`;
   const { data, loading, error } = useFetch(
     query.length <= 3 ? '' : url,
     'Something went wrong!',
