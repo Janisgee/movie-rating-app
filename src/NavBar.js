@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { useKey } from './OwnUseHook/useKey';
 
 export default function NavBar({ movies, query, onQuery }) {
   return (
@@ -22,23 +23,11 @@ function Logo() {
 function Search({ query, onQuery }) {
   const inputEl = useRef(null);
 
-  useEffect(
-    function () {
-      function callBack(e) {
-        if (document.activeElement === inputEl.current) return;
-        if (e.code === 'Enter') {
-          inputEl.current.focus();
-          onQuery('');
-        }
-      }
-      document.addEventListener('keydown', callBack);
-
-      return function () {
-        document.removeEventListener('keydown', callBack);
-      };
-    },
-    [onQuery],
-  );
+  useKey('Enter', function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    onQuery('');
+  });
 
   return (
     <input

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import ErrorMessage from '../Reuseable/ErrorMessage';
 import Loader from '../Reuseable/Loader';
 import StarRating from '../StarRating';
+import { useFetch } from '../OwnUseHook/useFetch';
+import { useKey } from '../OwnUseHook/useKey';
 const apiKey = '8be92ce5';
 
 export default function MovieDetails({
@@ -52,20 +54,17 @@ export default function MovieDetails({
 
   useEffect(
     function () {
-      function callBack(e) {
-        if (e.code === 'Escape') {
-          onCloseMovie();
-          console.log('CLOSE');
-        }
-      }
-      document.addEventListener('keydown', callBack);
+      if (!title) return;
+      document.title = `Movie | ${title} `;
 
       return function () {
-        document.removeEventListener('keydown', callBack);
+        document.title = 'usePopcorn';
       };
     },
-    [onCloseMovie],
+    [title],
   );
+
+  useKey('Escape', onCloseMovie);
 
   useEffect(
     function () {
