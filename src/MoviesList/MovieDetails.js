@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import ErrorMessage from '../Reuseable/ErrorMessage';
 import Loader from '../Reuseable/Loader';
 import StarRating from '../StarRating';
-import { useFetch } from '../OwnUseHook/useFetch';
 import { useKey } from '../OwnUseHook/useKey';
 const apiKey = '8be92ce5';
 
@@ -27,7 +26,6 @@ export default function MovieDetails({
 
   const {
     Title: title,
-    Year: year,
     Released: released,
     Runtime: runtime,
     Actors: actors,

@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import NavBar from './NavBar';
 import Main from './Main';
 import { useMovie } from './OwnUseHook/useMovie';
-
-const apiKey = '8be92ce5';
 
 export default function App() {
   const [query, setQuery] = useState('');
